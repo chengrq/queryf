@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+        <select name="component" id="component" multiple="multiple" size="7">
+            {% for coms in component1 %}
+            <option value ="{{coms.component}}">{{coms.component}}</option>
+            {% endfor %}
+        </select>
+
+</body>
+</html>
