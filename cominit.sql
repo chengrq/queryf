@@ -1,0 +1,1 @@
+insert INTO component_bug values(abc)

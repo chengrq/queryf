@@ -6,10 +6,10 @@ from flask import render_template, request, redirect
 
 @app.route('/', methods={'post', 'get'})
 def index():
-    db.session.add(Component_bug('HTTP'))
-    db.session.commit()
+    #db.session.add(Component_bug('HTTP'))
+    #db.session.commit()
     components = Component_bug.query.all()
-    return render_template('bug.html', component1 = components)
+    return render_template('index.html', component1 = components)
 
 @app.route('/reg/', methods={'post', 'get'})
 def reg():
