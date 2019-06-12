@@ -40,3 +40,29 @@ def addassi():
         return redirect(next)
     
     return redirect('/')
+
+@app.route('/delcomp/', methods={'post', 'get'})
+def delcomp():
+    comp = request.values.get('addcom').strip()
+    Comp = Component_bug.query.filter_by(component=comp).first()
+
+    db.session.delete(Comp)
+    db.session.commit()
+    next = request.values.get('next')
+    if next != None and next.startswith('/'):
+        return redirect(next)
+    
+    return redirect('/')
+
+@app.route('/delassi/', methods={'post', 'get'})
+def delassi():
+    assi = request.values.get('addass').strip()
+    Assi = Assignee_bug.query.filter_by(assignee=assi).first()
+
+    db.session.delete(Assi)
+    db.session.commit()
+    next = request.values.get('next')
+    if next != None and next.startswith('/'):
+        return redirect(next)
+    
+    return redirect('/')
