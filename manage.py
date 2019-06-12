@@ -1,7 +1,7 @@
 # -*- encoding=UTF-8 -*-
 
 from query import app, db
-from query.models import Component_bug
+from query.models import Component_bug, Assignee_bug
 from flask_script import Manager
 
 manager = Manager(app)

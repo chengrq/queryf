@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div class="cssstyle" style="float:left;">
+            <h3>component</h3>
+            <select name="component" id="component" multiple="multiple" size="7" style="width:200px;">
+                {% for coms in component1 %}
+                <option value ="{{coms.component}}">{{coms.component}}</option>
+                {% endfor %}
+            </select>
+            <form method="post" id="addcomponent">
+                
+                <div class="form-item">
+                    <input class="input-txt"  maxlength="30" name="addcom" value="" type="text" style="width:150px;">
+                </div>  
+                <input type = "hidden" name = "next" value = "{{next}}"/>
+                <div class="btn-wrapper">
+                    <button class="btn-primary" onclick="form=document.getElementById('addcomponent');form.action='/addcomp/';">ADD</button>
+                </div>
+            </form>
+        </div>
+
+        
+
+        <div class="cssstyle" style="float:left;">
+            <h3>assignee</h3>
+            <select name="assignee" id="assignee" multiple="multiple" size="7" style="width:200px;">
+                {% for asss in assignee1 %}
+                <option value ="{{asss.assignee}}">{{asss.assignee}}</option>
+                {% endfor %}
+            </select>
+            <form method="post" id="addassignee">
+                
+                    <div class="form-item">
+                        <input class="input-txt"  maxlength="30" name="addass" value="" type="text" style="width:150px;">
+                    </div>  
+                    <input type = "hidden" name = "next" value = "{{next}}"/>
+                    <div class="btn-wrapper">
+                        <button class="btn-primary" onclick="form=document.getElementById('addassignee');form.action='/addassi/';">ADD</button>
+                    </div>
+                </form>
+        </div>
+        
+        <div style="clear:both">
+            <button onclick="queryindex()">
+                search
+            </button>
+        </div>
+        
+        <script type="text/javascript">
+            function queryindex(){
+                var tmpurl = "";
+                var asss = new Array();
+                var selectass = document.getElementById("assignee");
+                for(var i = 0;i < selectass.length;i++){
+                    if(selectass.options[i].selected){
+                        asss.push(selectass[i].value);
+                    }
+                }
+                if(asss.length!=0){
+                    tmpurl += "&j_top=OR";
+                    for(var i = 0; i < asss.length; i++){
+                        tmpurl += "&f" + (i+1) + "=assigned_to&o" + (i+1) + "=equals&v" +(i+1)+ "=" + asss[i];
+                    }
+                }
+
+                var coms = new Array();
+                var  myselect=document.getElementById("component");
+                for(i=0;i<myselect.length;i++){
+                    if(myselect.options[i].selected){
+                        var tmp = myselect[i].value;
+                        tmp = tmp.replace(/\s+/g,"%20");
+                        tmp = tmp.replace(new RegExp(/(:)/g),"%3A");
+                        coms.push(tmp);
+                    }
+                }
+                if(coms.length!=0){
+                    for(var i = 0; i < coms.length; i++){
+                        tmpurl += "&component=" + coms[i];
+                    }
+                }
+                //alert(coms);
+                window.open("https://bugs.west.isilon.com/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&product=OneFS" + tmpurl);
+            }
+
+        </script>
+
+            <style>
+                .cssstyle {height:350px; width:250px; font-family:'Times New Roman', Times, serif}
+                select option {font-size:16px; font-family:'Times New Roman', Times, serif}
+                h3 {font-size:28px; font-family:'Times New Roman', Times, serif}
+                button {font-size:16px; font-family:'Times New Roman', Times, serif}
+                input {margin:10px 0}
+
+                /*body{text-align:center}*/ 
+            </style>
+    </body>
+</html>

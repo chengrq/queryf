@@ -2,7 +2,23 @@
 <html>
 
 <body>
+        <form method="post" id="regloginform">
+                
+            <div class="form-item">
+                <input class="input-txt"  maxlength="20" name="a" value="" type="text" >
+            </div>  
+            <input type = "hidden" name = "next" value = "{{next}}"/>
+            <div class="btn-wrapper">
+                <button class="btn-primary" onclick="form=document.getElementById('regloginform');form.action='/reg/';">ADD</button>
+            </div>
+        </form>
+            <select name="component" id="component" multiple="multiple" size="7">
+                {% for coms in component1 %}
+                <option value ="{{coms.component}}">{{coms.component}}</option>
+                {% endfor %}
+            </select>
 
+    <!--
         <select name="component" id="component" multiple="multiple" size="7">
             {% for coms in component1 %}
             <option value ="{{coms.component}}">{{coms.component}}</option>
@@ -11,10 +27,11 @@
             <form method="post" id="regloginform">
                 
                 <div class="form-item">
-                    <input class="input-txt"  aria-label="用户名" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="component" placeholder="用户名" value="" type="text" data-reactid=".0.1.0.1.0.1.0.5.0">
+                    <input class="input-txt"  aria-label="用户名" aria-required="true" autocapitalize="off" autocorrect="off" maxlength="30" name="a" placeholder="用户名" value="{{a}}" type="text" data-reactid=".0.1.0.1.0.1.0.5.0">
                 </div>
                 <input type = "hidden" name = "next" value = "{{next}}"/>
                 <div class="btn-wrapper">
+                    <input type="button" value="submit" onclick="form=document.getElementById('regloginform');form.action='/reg/';">
                     <button class="btn-primary" type="submit" onclick="form=document.getElementById('regloginform');form.action='/reg/';">注册</button>
                     
                 </div>
@@ -23,6 +40,37 @@
             
             <input type="button" value="submit" onclick="javascrtpt:window.location.href='https://www.baidu.com/'">
         </select>
+
+        <select name="test1" id="test1" multiple="multiple" size="7">
+            <option value ="ACS">ACS</option>
+            <option value ="AIMA">AIMA</option>
+            <option value ="ACS">AIMA: ACLs</option>
+            <option value ="ACS">AIMA: Access</option>
+        </select>
+        <input type="button" value="search" onclick="myFuction()">
+        <script>
+            function myFuction(){
+                var myselect=document.getElementById("test1");
+                myselect.options[index].value;
+                // alert("hello");
+                window.location.href="https://www.baidu.com/"
+            }
+        </script>
+        <button onclick="demo()">
+            abd
+        </button>
+        <script type="text/javascript">
+            function demo(){
+                var myselect=document.getElementById("test1");
+                var tmp = document.all["component"].value;
+                var tmp1 = "q3254421/article/details/88305149";
+                // alert(tmp);
+                window.location.href="https://blog.csdn.net/";// + tmp1;
+            }
+        </script>
+    -->
+
+        
 
 </body>
 </html>

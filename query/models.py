@@ -10,3 +10,14 @@ class Component_bug(db.Model):
 
     def __repr__(self):
         return '<Component %d %s>' % (self.id, self.component)
+
+
+class Assignee_bug(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    assignee = db.Column(db.String(1024))
+
+    def __init__(self, assignee):
+        self.assignee = assignee
+
+    def __repr__(self):
+        return '<Assignee %d %s>' % (self.id, self.assignee)
