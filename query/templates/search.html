@@ -2,8 +2,8 @@
 <html>
     <body>
         <div class="cssstyle" style="float:left;">
-            <h3>component</h3>
-            <select name="component" id="component" multiple="multiple" size="7" style="width:200px;">
+            <h3>Component</h3>
+            <select name="component" id="component" multiple="multiple" size="10" style="width:250px;">
                 {% for coms in component1 %}
                 <option value ="{{coms.component}}">{{coms.component}}</option>
                 {% endfor %}
@@ -24,8 +24,8 @@
         
 
         <div class="cssstyle" style="float:left;">
-            <h3>assignee</h3>
-            <select name="assignee" id="assignee" multiple="multiple" size="7" style="width:200px;">
+            <h3>Assignee</h3>
+            <select name="assignee" id="assignee" multiple="multiple" size="10" style="width:250px;">
                 {% for asss in assignee1 %}
                 <option value ="{{asss.assignee}}">{{asss.assignee}}</option>
                 {% endfor %}
@@ -43,9 +43,32 @@
                 </form>
         </div>
         
+
+        <div class="cssstyle" style="float:left;">
+            <h3>Target Milestone</h3>
+            <select name="target" id="target" multiple="multiple" size="10" style="width:250px;">
+                {% for targ in target1 %}
+                <option value ="{{targ.target}}">{{targ.target}}</option>
+                {% endfor %}
+            </select>
+            <form method="post" id="addtarget">
+                
+                    <div class="form-item">
+                        <input class="input-txt"  maxlength="30" name="addtar" value="" type="text" style="width:150px;">
+                    </div>  
+                    <input type = "hidden" name = "next" value = "{{next}}"/>
+                    <div class="btn-wrapper">
+                        <button class="btn-primary" onclick="form=document.getElementById('addtarget');form.action='/addtarg/';">ADD</button>
+                        <button class="btn-primary" onclick="form=document.getElementById('addtarget');form.action='/deltarg/';">DELETE</button>
+                    </div>
+                </form>
+        </div>
+
+
+
         <div style="clear:both">
             <button onclick="queryindex()">
-                search
+                SEARCH
             </button>
         </div>
         
@@ -73,6 +96,8 @@
                         var tmp = myselect[i].value;
                         tmp = tmp.replace(/\s+/g,"%20");
                         tmp = tmp.replace(new RegExp(/(:)/g),"%3A");
+                        tmp = tmp.replace(/\(/g,"%28");
+                        tmp = tmp.replace(/\)/g,"%29");
                         coms.push(tmp);
                     }
                 }
@@ -81,6 +106,23 @@
                         tmpurl += "&component=" + coms[i];
                     }
                 }
+
+                var tars = new Array();
+                var  selecttarg=document.getElementById("target");
+                for(i=0;i<selecttarg.length;i++){
+                    if(selecttarg.options[i].selected){
+                        var tmp = selecttarg[i].value;
+                        tmp = tmp.replace(/\s+/g,"%20");
+                        tmp = tmp.replace(new RegExp(/(:)/g),"%3A");
+                        tars.push(tmp);
+                    }
+                }
+                if(tars.length!=0){
+                    for(var i = 0; i < tars.length; i++){
+                        tmpurl += "&target_milestone=" + tars[i];
+                    }
+                }
+
                 //alert(coms);
                 window.open("https://bugs.west.isilon.com/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&product=OneFS" + tmpurl);
             }
@@ -88,7 +130,7 @@
         </script>
 
             <style>
-                .cssstyle {height:350px; width:250px; font-family:'Times New Roman', Times, serif}
+                .cssstyle {height:400px; width:300px; font-family:'Times New Roman', Times, serif}
                 select option {font-size:16px; font-family:'Times New Roman', Times, serif}
                 h3 {font-size:28px; font-family:'Times New Roman', Times, serif}
                 button {font-size:16px; font-family:'Times New Roman', Times, serif}

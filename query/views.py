@@ -1,7 +1,7 @@
 # -*- encoding=UTF-8 -*-
 
 from query import app, db
-from query.models import Component_bug, Assignee_bug
+from query.models import Component_bug, Assignee_bug, Target_Milestone_bug
 from flask import render_template, request, redirect
 import json
 
@@ -11,7 +11,8 @@ def index():
     #db.session.commit()
     components = Component_bug.query.order_by(Component_bug.component.asc()).all()
     assignees = Assignee_bug.query.order_by(Assignee_bug.assignee.asc()).all()
-    return render_template('search.html', component1 = components, assignee1 = assignees)
+    targets = Target_Milestone_bug.query.all()
+    return render_template('search.html', component1 = components, assignee1 = assignees, target1 = targets)
 
 
 
@@ -41,6 +42,20 @@ def addassi():
     
     return redirect('/')
 
+
+@app.route('/addtarg/', methods={'post', 'get'})
+def addtarg():
+    targ = request.values.get('addtar').strip()
+    Targ = Target_Milestone_bug(targ)
+
+    db.session.add(Targ)
+    db.session.commit()
+    next = request.values.get('next')
+    if next != None and next.startswith('/'):
+        return redirect(next)
+    
+    return redirect('/')
+
 @app.route('/delcomp/', methods={'post', 'get'})
 def delcomp():
     comp = request.values.get('addcom').strip()
@@ -60,6 +75,19 @@ def delassi():
     Assi = Assignee_bug.query.filter_by(assignee=assi).first()
 
     db.session.delete(Assi)
+    db.session.commit()
+    next = request.values.get('next')
+    if next != None and next.startswith('/'):
+        return redirect(next)
+    
+    return redirect('/')
+
+@app.route('/deltarg/', methods={'post', 'get'})
+def deltarg():
+    targ = request.values.get('addtar').strip()
+    Targ = Target_Milestone_bug.query.filter_by(target=targ).first()
+
+    db.session.delete(Targ)
     db.session.commit()
     next = request.values.get('next')
     if next != None and next.startswith('/'):

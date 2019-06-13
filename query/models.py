@@ -21,3 +21,13 @@ class Assignee_bug(db.Model):
 
     def __repr__(self):
         return '<Assignee %d %s>' % (self.id, self.assignee)
+
+class Target_Milestone_bug(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    target = db.Column(db.String(1024))
+ 
+    def __init__(self, target):
+        self.target = target
+
+    def __repr__(self):
+        return '<Target %d %s>' % (self.id, self.target)
