@@ -44,7 +44,7 @@ def addcomp():
 def addassi():
     assi = request.values.get('addass').strip()
     if assi =='':
-        flash('assign can not be empty')
+        flash('assignee can not be empty')
         return redirect('/')    
 
 
@@ -68,7 +68,7 @@ def addassi():
 def addtarg():
     targ = request.values.get('addtar').strip()
     if targ =='':
-        flash('target_milestone can not be empty')
+        flash('target milestone can not be empty')
         return redirect('/')    
 
 
