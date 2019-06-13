@@ -23,6 +23,8 @@
 
         
 
+        
+
         <div class="cssstyle" style="float:left;">
             <h3>Assignee</h3>
             <select name="assignee" id="assignee" multiple="multiple" size="10" style="width:250px;">
@@ -63,7 +65,7 @@
                     </div>
                 </form>
         </div>
-
+        
 
 
         <div style="clear:both">
@@ -71,6 +73,10 @@
                 SEARCH
             </button>
         </div>
+
+        {% for msg in get_flashed_messages() %}
+            <h3>{{ msg }}</h3>
+        {% endfor %}
         
         <script type="text/javascript">
             function queryindex(){

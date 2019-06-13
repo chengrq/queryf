@@ -2,8 +2,9 @@
 
 from query import app, db
 from query.models import Component_bug, Assignee_bug, Target_Milestone_bug
-from flask import render_template, request, redirect
+from flask import render_template, session, request, redirect, flash, get_flashed_messages
 import json
+app.config["SECRET_KEY"] = "hskghsaklg"
 
 @app.route('/', methods={'post', 'get'})
 def index():
@@ -19,6 +20,16 @@ def index():
 @app.route('/addcomp/', methods={'post', 'get'})
 def addcomp():
     comp = request.values.get('addcom').strip()
+    if comp =='':
+        flash('component can not be empty')
+        return redirect('/')    
+
+
+    compon = Component_bug.query.filter_by(component=comp).first()
+    if compon != None:
+        flash('component already exists')
+        return redirect('/')
+
     Comp = Component_bug(comp)
 
     db.session.add(Comp)
@@ -32,6 +43,16 @@ def addcomp():
 @app.route('/addassi/', methods={'post', 'get'})
 def addassi():
     assi = request.values.get('addass').strip()
+    if assi =='':
+        flash('assign can not be empty')
+        return redirect('/')    
+
+
+    assign = Assignee_bug.query.filter_by(assignee=assi).first()
+    if assign != None:
+        flash('assignee already exists')
+        return redirect('/')
+
     Assi = Assignee_bug(assi)
 
     db.session.add(Assi)
@@ -46,6 +67,16 @@ def addassi():
 @app.route('/addtarg/', methods={'post', 'get'})
 def addtarg():
     targ = request.values.get('addtar').strip()
+    if targ =='':
+        flash('target_milestone can not be empty')
+        return redirect('/')    
+
+
+    targe = Target_Milestone_bug.query.filter_by(target=targ).first()
+    if targe != None:
+        flash('target milestone already exists')
+        return redirect('/')
+
     Targ = Target_Milestone_bug(targ)
 
     db.session.add(Targ)
@@ -60,6 +91,9 @@ def addtarg():
 def delcomp():
     comp = request.values.get('addcom').strip()
     Comp = Component_bug.query.filter_by(component=comp).first()
+    if Comp == None:
+        flash('component does not exist')
+        return redirect('/')
 
     db.session.delete(Comp)
     db.session.commit()
@@ -73,6 +107,9 @@ def delcomp():
 def delassi():
     assi = request.values.get('addass').strip()
     Assi = Assignee_bug.query.filter_by(assignee=assi).first()
+    if Assi == None:
+        flash('assignee does not exist')
+        return redirect('/')
 
     db.session.delete(Assi)
     db.session.commit()
@@ -86,6 +123,9 @@ def delassi():
 def deltarg():
     targ = request.values.get('addtar').strip()
     Targ = Target_Milestone_bug.query.filter_by(target=targ).first()
+    if Targ == None:
+        flash('target milestone does not exist')
+        return redirect('/')
 
     db.session.delete(Targ)
     db.session.commit()
