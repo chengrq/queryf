@@ -65,6 +65,30 @@
                     </div>
                 </form>
         </div>
+
+        <div class="cssstyle" style="float:left;">
+            <h3>Status</h3>
+            <select name="status" id="status" multiple="multiple" size="10" style="width:250px;">
+                {% for stat in status1 %}
+                    {% if stat.status == 'NEW' or stat.status == 'ASSIGNED' or stat.status == 'REOPENED'%}
+                        <option value ="{{stat.status}}" selected="selected">{{stat.status}}</option>
+                    {% else %}
+                        <option value ="{{stat.status}}">{{stat.status}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <form method="post" id="addstatus">
+                
+                    <div class="form-item">
+                        <input class="input-txt"  maxlength="30" name="addsta" value="" type="text" style="width:150px;">
+                    </div>  
+                    <input type = "hidden" name = "next" value = "{{next}}"/>
+                    <div class="btn-wrapper">
+                        <button class="btn-primary" onclick="form=document.getElementById('addstatus');form.action='/addstat/';">ADD</button>
+                        <button class="btn-primary" onclick="form=document.getElementById('addstatus');form.action='/delstat/';">DELETE</button>
+                    </div>
+                </form>
+        </div>
         
 
 
@@ -81,6 +105,20 @@
         <script type="text/javascript">
             function queryindex(){
                 var tmpurl = "";
+
+                var stat = new Array();
+                var selectsta = document.getElementById("status");
+                for(var i = 0;i < selectsta.length;i++){
+                    if(selectsta.options[i].selected){
+                        stat.push(selectsta[i].value);
+                    }
+                }
+                if(stat.length!=0){
+                    for(var i = 0; i < stat.length; i++){
+                        tmpurl += "&bug_status=" + stat[i] ;
+                    }
+                }
+
                 var asss = new Array();
                 var selectass = document.getElementById("assignee");
                 for(var i = 0;i < selectass.length;i++){
@@ -129,8 +167,10 @@
                     }
                 }
 
+
+
                 //alert(coms);
-                window.open("https://bugs.west.isilon.com/buglist.cgi?bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED&product=OneFS" + tmpurl);
+                window.open("https://bugs.west.isilon.com/buglist.cgi?query_format=advanced&product=OneFS" + tmpurl);
             }
 
         </script>

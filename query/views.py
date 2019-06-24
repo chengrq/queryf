@@ -1,7 +1,7 @@
 # -*- encoding=UTF-8 -*-
 
 from query import app, db
-from query.models import Component_bug, Assignee_bug, Target_Milestone_bug
+from query.models import Component_bug, Assignee_bug, Target_Milestone_bug, Status_bug
 from flask import render_template, session, request, redirect, flash, get_flashed_messages
 import json
 app.config["SECRET_KEY"] = "hskghsaklg"
@@ -13,7 +13,8 @@ def index():
     components = Component_bug.query.order_by(Component_bug.component.asc()).all()
     assignees = Assignee_bug.query.order_by(Assignee_bug.assignee.asc()).all()
     targets = Target_Milestone_bug.query.all()
-    return render_template('search.html', component1 = components, assignee1 = assignees, target1 = targets)
+    statuss = Status_bug.query.all()
+    return render_template('search.html', component1 = components, assignee1 = assignees, target1 = targets, status1 = statuss)
 
 
 
@@ -87,6 +88,29 @@ def addtarg():
     
     return redirect('/')
 
+@app.route('/addstat/', methods={'post', 'get'})
+def addstat():
+    stat = request.values.get('addsta').strip()
+    if stat =='':
+        flash('status can not be empty')
+        return redirect('/')    
+
+
+    statu = Status_bug.query.filter_by(status=stat).first()
+    if statu != None:
+        flash('status already exists')
+        return redirect('/')
+
+    Stat = Status_bug(stat)
+
+    db.session.add(Stat)
+    db.session.commit()
+    next = request.values.get('next')
+    if next != None and next.startswith('/'):
+        return redirect(next)
+    
+    return redirect('/')
+
 @app.route('/delcomp/', methods={'post', 'get'})
 def delcomp():
     comp = request.values.get('addcom').strip()
@@ -128,6 +152,22 @@ def deltarg():
         return redirect('/')
 
     db.session.delete(Targ)
+    db.session.commit()
+    next = request.values.get('next')
+    if next != None and next.startswith('/'):
+        return redirect(next)
+    
+    return redirect('/')
+
+@app.route('/delstat/', methods={'post', 'get'})
+def delstat():
+    stat = request.values.get('addsta').strip()
+    Stat = Status_bug.query.filter_by(status=stat).first()
+    if Stat == None:
+        flash('stat does not exist')
+        return redirect('/')
+
+    db.session.delete(Stat)
     db.session.commit()
     next = request.values.get('next')
     if next != None and next.startswith('/'):
