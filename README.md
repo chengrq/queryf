@@ -23,7 +23,7 @@ $ pip install flask_script
 ### Web Runserver
 
 ```bash
-$ git clone https://github.west.isilon.com/rcheng/bugzilla-query.git
+$ git clone https://github.com/chengrq/queryf.git
 $ cd bugzilla-query
 $ export FLASK_APP=runserver.py
 $ flask run --host 0.0.0.0
